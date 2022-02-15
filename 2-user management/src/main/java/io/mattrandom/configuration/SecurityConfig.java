@@ -8,11 +8,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -51,21 +55,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        UserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        UserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
+//
+//        UserDetails user = User.withUsername("admin").password(passwordEncoder().encode("pass")).authorities("ADMIN").build();
+//        UserDetails user2 = User.withUsername("user").password(passwordEncoder().encode("pass")).authorities("USER").build();
+//
+//        userDetailsService.createUser(user);
+//        userDetailsService.createUser(user2);
+//
+//        auth.userDetailsService(userDetailsService);
+//    }
 
-        UserDetails user = User.withUsername("admin").password(passwordEncoder().encode("pass")).authorities("ADMIN").build();
-        UserDetails user2 = User.withUsername("user").password(passwordEncoder().encode("pass")).authorities("USER").build();
-
-        userDetailsService.createUser(user);
-        userDetailsService.createUser(user2);
-
-        auth.userDetailsService(userDetailsService);
+    @Bean
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
 }
