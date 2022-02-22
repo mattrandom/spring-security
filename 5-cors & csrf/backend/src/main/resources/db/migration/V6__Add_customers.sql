@@ -1,0 +1,2 @@
+INSERT INTO `customers` (`name`,`email`,`mobile_number`, `pwd`, `role`,`create_dt`)
+ VALUES ('asd','asd@asd.com','9876548337', '$2a$12$mXMI4dvfUuRQg7gydqpfbut7ggUIZNb3PWrvC1xf291JB7Q9akcre', 'admin',CURDATE());

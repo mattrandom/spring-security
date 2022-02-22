@@ -1,0 +1,1 @@
+INSERT IGNORE INTO `authorities` VALUES (NULL, 'happy', 'write');
