@@ -1,0 +1,1 @@
+INSERT IGNORE INTO `users` VALUES (NULL, 'happy', '12345', '1');
